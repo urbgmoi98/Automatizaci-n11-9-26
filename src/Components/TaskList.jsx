@@ -1,20 +1,53 @@
+import { Clock, AlertTriangle, Terminal } from 'lucide-react';
+
 export function TaskList({ tasks }) {
-  if (tasks.length === 0) return <p className="text-gray-400">No hay tareas.</p>;
+  if (tasks.length === 0) return (
+    <div className="text-center py-12 text-slate-500 font-mono">
+      <Terminal className="w-8 h-8 mx-auto mb-2 opacity-50" />
+      NO_DATA_FOUND
+    </div>
+  );
 
   return (
-    <ul className="space-y-2 mt-4">
+    <div className="space-y-3 mt-6 font-mono">
       {tasks.map((task, index) => {
-        const isOverdue = new Date(task.deadline) < new Date();
+        const isOverdue = new Date(task.deadline) < new Date() && !task.completed;
         return (
-          <li key={task.id} className={`p-3 rounded border-l-4 shadow-sm flex justify-between items-center ${isOverdue ? 'border-red-500 bg-red-50' : 'border-blue-500 bg-white'}`}>
-            <div>
-              <span className="font-semibold text-gray-800">#{index + 1} {task.title}</span>
-              <p className="text-xs text-gray-500">Vence: {new Date(task.deadline).toLocaleDateString()}</p>
+          <div 
+            key={task.id} 
+            className={`group relative p-4 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:translate-x-1 ${
+              isOverdue 
+                ? 'border-red-500/30 bg-red-950/20 hover:border-red-500/60' 
+                : 'border-slate-700/50 bg-slate-900/40 hover:border-cyan-500/40'
+            }`}
+          >
+            <div className="flex justify-between items-start">
+              <div className="flex items-start gap-3">
+                <span className={`text-xs font-bold mt-1 ${isOverdue ? 'text-red-400' : 'text-cyan-400'}`}>
+                  [{String(index + 1).padStart(2, '0')}]
+                </span>
+                <div>
+                  <h3 className={`font-semibold ${isOverdue ? 'text-red-200' : 'text-slate-200'}`}>
+                    {task.title}
+                  </h3>
+                  <div className="flex items-center gap-1.5 mt-1 text-xs text-slate-500">
+                    <Clock className="w-3 h-3" />
+                    <span>DEADLINE: {new Date(task.deadline).toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+              {isOverdue && (
+                <div className="flex items-center gap-1 text-red-400 text-xs font-bold bg-red-950/50 px-2 py-1 rounded">
+                  <AlertTriangle className="w-3 h-3" />
+                  OVERDUE
+                </div>
+              )}
             </div>
-            {isOverdue && <span className="text-xs font-bold text-red-600">URGENTE</span>}
-          </li>
+            {/* Línea de escaneo decorativa */}
+            <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-cyan-500 to-transparent group-hover:w-full transition-all duration-500" />
+          </div>
         );
       })}
-    </ul>
+    </div>
   );
 }

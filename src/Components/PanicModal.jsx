@@ -1,49 +1,51 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Zap, CalendarClock } from 'lucide-react';
+import { AlertTriangle, Zap, ShieldAlert } from 'lucide-react';
 
 export function PanicModal({ suggestions, onResolve, isVisible }) {
   return (
     <AnimatePresence>
       {isVisible && suggestions && (
         <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4"
         >
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-red-100">
-            <div className="bg-gradient-to-r from-red-500 to-orange-500 p-6 text-white">
+          <motion.div 
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20 }}
+            className="bg-slate-900 border border-red-500/30 rounded-2xl shadow-[0_0_50px_rgba(239,68,68,0.15)] max-w-md w-full overflow-hidden"
+          >
+            <div className="bg-gradient-to-r from-red-900/50 to-orange-900/50 p-6 border-b border-red-500/20">
               <div className="flex items-center gap-3 mb-2">
-                <AlertTriangle className="w-8 h-8 animate-bounce" />
-                <h2 className="text-2xl font-bold">¡MODO PÁNICO ACTIVADO!</h2>
+                <ShieldAlert className="w-8 h-8 text-red-400 animate-pulse" />
+                <h2 className="text-2xl font-bold text-white font-mono tracking-tighter">PROTOCOL_PANIC</h2>
               </div>
-              <p className="opacity-90">Se detectaron {suggestions.overdueCount} tareas críticamente vencidas.</p>
+              <p className="text-red-200/80 text-sm font-mono">
+                &gt; {suggestions.overdueCount} critical failures detected in task queue
+              </p>
             </div>
             
             <div className="p-6 space-y-4">
-              <div className="bg-red-50 p-4 rounded-xl border border-red-100">
+              <div className="bg-red-950/30 p-4 rounded-xl border border-red-500/20 font-mono text-sm">
                 <div className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-red-600 mt-0.5" />
+                  <Zap className="w-5 h-5 text-amber-400 mt-0.5 shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-red-900">Acción Sugerida</h3>
-                    <p className="text-sm text-red-700 mt-1">{suggestions.suggestedAction}</p>
+                    <h3 className="font-semibold text-amber-300">SUGGESTED_ACTION:</h3>
+                    <p className="text-slate-300 mt-1">{suggestions.suggestedAction}</p>
                   </div>
                 </div>
               </div>
 
               <button
                 onClick={onResolve}
-                className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white py-3.5 rounded-xl font-medium transition-all active:scale-[0.98]"
+                className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-500 text-white py-3.5 rounded-xl font-bold font-mono tracking-wider transition-all active:scale-[0.98] shadow-lg shadow-red-900/20"
               >
-                <CalendarClock className="w-5 h-5" />
-                Aplicar Reprogramación Inteligente
+                EXECUTE_CONTINGENCY
               </button>
-              
-              <p className="text-xs text-center text-gray-400">
-                La automatización se pausará hasta resolver esta situación crítica
-              </p>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
