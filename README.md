@@ -56,3 +56,18 @@ La idea era simple: *"¿Y si mis tareas se ordenaran solas según la fecha lími
    ```bash
    git clone https://github.com/tu-usuario/priorizador-inteligente.git
    cd priorizador-inteligente
+
+
+ESTRUCTURA
+src/
+├── components/          # 🧩 Componentes reutilizables
+│   ├── MatrixBackground.jsx   # Fondo binario animado
+│   ├── PanicModal.jsx         # Modal de emergencia
+│   ├── StatusBadge.jsx        # Indicador de estado cyberpunk
+│   └── TaskList.jsx           # Lista estilo terminal
+├── data/
+│   └── db.js                  # Simulación de base de datos (localStorage)
+├── hooks/
+│   └── useSmartPrioritizer.js # 🧠 Cerebro de la automatización
+├── App.jsx                    # Punto de entrada principal
+└── main.jsx                   # Bootstrap de React
