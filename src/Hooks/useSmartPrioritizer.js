@@ -1,18 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { loadDB, saveDB } from '../data/db';
+import { loadDB, saveDB } from '../db';
 
 export function useSmartPrioritizer() {
-  const [tasks, setTasks] = useState([]);
-  const [config, setConfig] = useState({ intervalMs: 8000, panicThreshold: 3 });
+  const [tasks, setTasks] = useState(() => loadDB().tasks);
+  const [config] = useState(() => loadDB().config);
   const [state, setState] = useState('inactive');
   const [panicSuggestions, setPanicSuggestions] = useState(null);
   const intervalRef = useRef(null);
-
-  useEffect(() => {
-    const db = loadDB();
-    setTasks(db.tasks);
-    setConfig(db.config);
-  }, []);
 
   const runAutomation = useCallback(async () => {
     if (state === 'running') return;

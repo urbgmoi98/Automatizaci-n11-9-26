@@ -1,16 +1,58 @@
-# React + Vite
+# 🤖 Priorizador Inteligente de Tareas (React + Matrix Mode)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> ⚡ *Mi primer proyecto de automatización real en React. ¡Ordena tareas solo, detecta emergencias y tiene fondo estilo Matrix!* 🟢
 
-Currently, two official plugins are available:
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat-square&logo=react&logoColor=white)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-4.0-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+¡Hola! 👋 Soy estudiante/dev junior y este es mi proyecto final para aprender **automatizaciones en React**.  
+La idea era simple: *"¿Y si mis tareas se ordenaran solas según la fecha límite?"*... pero terminé agregando un **modo pánico**, persistencia local y un fondo de código binario cayendo porque... ¿por qué no? 😅
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📸 Vista Previa
 
-## Expanding the ESLint configuration
+| Modo Normal 🟢 | Modo Pánico 🚨 |
+|:---:|:---:|
+| ![Normal](https://via.placeholder.com/400x250/0f172a/00ff00?text=Priorizador+Activo) | ![Panic](https://via.placeholder.com/400x250/0f172a/ff4444?text=PROTOCOL_PANIC) |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+*(Nota: Las imágenes son placeholders. ¡Corre el proyecto para ver la magia real!)*
+
+---
+
+## ✨ ¿Qué hace esta app?
+
+- 🔄 **Automatización Real**: Cada 8 segundos (o al hacer clic), reordena todas las tareas por fecha límite.
+- 🚨 **Modo Pánico Inteligente**: Si detecta +3 tareas vencidas, se detiene y te sugiere reprogramarlas automáticamente.
+- 💾 **Persistencia Local**: Usa `localStorage` como base de datos. ¡Tus cambios sobreviven al recargar!
+- 🟢 **Fondo Matrix Binario**: Canvas animado con ceros y unos cayendo. Optimizado para no quemar tu CPU.
+- 🎨 **UI Cyberpunk**: Glassmorphism, neón, terminal style y animaciones suaves con Framer Motion.
+- 🧹 **Código Limpio**: Hooks personalizados, limpieza de efectos (`clearInterval`), `useCallback` y componentización.
+
+---
+
+## 🛠️ Tecnologías Usadas
+
+| Categoría | Herramientas |
+|-----------|-------------|
+| **Core** | React 18, Vite, JavaScript ES6+ |
+| **Estilos** | Tailwind CSS, Framer Motion |
+| **Iconos** | Lucide React |
+| **Lógica** | Custom Hooks, localStorage API, Canvas API |
+| **Extras** | Mucha café ☕ y documentación de React |
+
+---
+
+## 🚀 Cómo Correrlo (¡Es súper fácil!)
+
+### Requisitos previos
+- Node.js 16+ 
+- npm o yarn
+
+### Pasos
+1. **Clona el repo** (o descarga los archivos)
+   ```bash
+   git clone https://github.com/tu-usuario/priorizador-inteligente.git
+   cd priorizador-inteligente

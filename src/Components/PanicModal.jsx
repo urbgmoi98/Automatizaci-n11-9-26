@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Zap, ShieldAlert } from 'lucide-react';
+import { Zap, ShieldAlert } from 'lucide-react';
 
 export function PanicModal({ suggestions, onResolve, isVisible }) {
   return (

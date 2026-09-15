@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 // Simulación de proceso asíncrono (ej. llamada a API o cálculo pesado)
 const simulatePrioritizationAPI = async (tasks) => {
@@ -25,7 +25,7 @@ export function useTaskPrioritizer(initialTasks, autoIntervalMs = 10000) {
   const intervalRef = useRef(null);
 
   // Función principal de automatización
-  const runPrioritization = async () => {
+  const runPrioritization = useCallback(async () => {
     setAutomationState('running');
     try {
       const prioritizedTasks = await simulatePrioritizationAPI(tasks);
@@ -38,7 +38,7 @@ export function useTaskPrioritizer(initialTasks, autoIntervalMs = 10000) {
       console.error("Error en automatización:", err);
       setAutomationState('error');
     }
-  };
+  }, [tasks]);
 
   // useEffect para el disparador basado en tiempo (Trigger: Temporizador)
   useEffect(() => {
@@ -53,15 +53,15 @@ export function useTaskPrioritizer(initialTasks, autoIntervalMs = 10000) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [tasks.length, autoIntervalMs]); 
+  }, [tasks.length, autoIntervalMs, runPrioritization]);
 
   // Disparador manual adicional
-  const triggerManual = () => {
+  const triggerManual = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     runPrioritization();
     // Reiniciar intervalo tras ejecución manual
     intervalRef.current = setInterval(runPrioritization, autoIntervalMs);
-  };
+  }, [autoIntervalMs, runPrioritization]);
 
   return { tasks, automationState, triggerManual, setTasks };
 }
