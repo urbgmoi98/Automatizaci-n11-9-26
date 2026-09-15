@@ -1,122 +1,66 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { useTaskPrioritizer } from './Hooks/useTaskPrioritizer';
+import { StatusBadge } from './Components/StatusBadge';
+import { TaskList } from './Components/TaskList';
+
+const MOCK_TASKS = [
+  { id: 1, title: 'Revisar contrato anual', deadline: '2026-09-20' },
+  { id: 2, title: 'Pagar factura proveedor', deadline: '2026-09-14' }, // Vencida ayer
+  { id: 3, title: 'Actualizar documentación', deadline: '2026-09-25' },
+  { id: 4, title: 'Deploy a producción', deadline: '2026-09-16' },
+];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { tasks, automationState, triggerManual, setTasks } = useTaskPrioritizer(MOCK_TASKS, 8000);
+  const [newTaskTitle, setNewTaskTitle] = useState('');
+
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    if (!newTaskTitle.trim()) return;
+    const task = {
+      id: Date.now(),
+      title: newTaskTitle,
+      deadline: new Date(Date.now() + Math.random() * 1000000000).toISOString().split('T')[0]
+    };
+    setTasks(prev => [...prev, task]);
+    setNewTaskTitle('');
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-gray-100 p-8 font-sans">
+      <div className="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">🤖 Auto-Priorizador</h1>
+          <StatusBadge state={automationState} />
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+
+        <div className="bg-yellow-50 border border-yellow-200 p-3 rounded text-sm text-yellow-800 mb-4">
+          ℹ️ La automatización se ejecuta cada 8 segundos o manualmente. Las tareas vencidas saltan al inicio.
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+
+        <button 
+          onClick={triggerManual}
+          disabled={automationState === 'running'}
+          className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white py-2 rounded mb-4 transition-colors"
         >
-          Count is {count}
+          {automationState === 'running' ? 'Procesando...' : '⚡ Ejecutar Priorización Ahora'}
         </button>
-      </section>
 
-      <div className="ticks"></div>
+        <form onSubmit={handleAddTask} className="flex gap-2 mb-4">
+          <input 
+            type="text" 
+            value={newTaskTitle}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
+            placeholder="Nueva tarea..."
+            className="flex-1 border p-2 rounded"
+          />
+          <button type="submit" className="bg-gray-800 text-white px-4 py-2 rounded">+</button>
+        </form>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <TaskList tasks={tasks} />
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
