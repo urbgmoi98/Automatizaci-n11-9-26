@@ -4,7 +4,10 @@
     { "id": "2", "title": "Revisión de código PR #482", "deadline": "2026-09-15T12:00:00", "completed": false },
     { "id": "3", "title": "Preparar demo para cliente Alpha", "deadline": "2026-09-16T09:00:00", "completed": false },
     { "id": "4", "title": "Actualizar dependencias de seguridad", "deadline": "2026-09-18T17:00:00", "completed": false },
-    { "id": "5", "title": "Planificación Sprint 42", "deadline": "2026-09-20T10:00:00", "completed": false }
+    { "id": "5", "title": "Planificación Sprint 42", "deadline": "2026-09-20T10:00:00", "completed": false },
+    { "id": "6", "title": "Revisar contrato anual", "deadline": "2026-09-22T15:00:00", "completed": false },
+    { "id": "7", "title": "Organizar reunión de equipo", "deadline": "2026-09-24T14:00:00", "completed": false },
+    { "id": "8", "title": "Actualizar documentación del proyecto", "deadline": "2026-09-26T11:00:00", "completed": false }
   ],
   "automationConfig": {
     "intervalMs": 10000,
