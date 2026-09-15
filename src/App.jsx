@@ -3,10 +3,24 @@ import { StatusBadge } from './Components/StatusBadge';
 import { TaskList } from './Components/TaskList';
 import { PanicModal } from './Components/PanicModal';
 import { MatrixBackground } from './Components/MatrixBackground';
-import { Cpu, Database, Timer, TerminalSquare } from 'lucide-react';
+import { Cpu, Database, Plus, Timer, TerminalSquare, Trash2 } from 'lucide-react';
 
 function App() {
-  const { tasks, state, panicSuggestions, triggerManual, resolvePanic, config } = useSmartPrioritizer();
+  const { tasks, state, panicSuggestions, triggerManual, resolvePanic, config, addTask, toggleTask, removeTask, clearCompleted } = useSmartPrioritizer();
+  const [title, setTitle] = useState('');
+  const [deadline, setDeadline] = useState('');
+  const [formError, setFormError] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (!addTask(title, deadline)) {
+      setFormError('Ingresa un título y una fecha límite válidos.');
+      return;
+    }
+    setTitle('');
+    setDeadline('');
+    setFormError('');
+  };
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans relative overflow-x-hidden">
@@ -56,7 +70,24 @@ function App() {
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
           </button>
 
-          <TaskList tasks={tasks} />
+          <form onSubmit={handleSubmit} className="grid gap-3 rounded-2xl border border-slate-700 bg-slate-900/60 p-4">
+            <label className="text-left text-xs font-mono text-cyan-400" htmlFor="task-title">NEW_TASK</label>
+            <input id="task-title" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Describe la tarea" className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white" />
+            <label className="text-left text-xs font-mono text-cyan-400" htmlFor="task-deadline">DEADLINE</label>
+            <input id="task-deadline" type="datetime-local" value={deadline} onChange={(event) => setDeadline(event.target.value)} className="rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white" />
+            {formError && <p className="text-left text-sm text-red-400">{formError}</p>}
+            <button type="submit" className="flex items-center justify-center gap-2 rounded-xl bg-cyan-600 py-3 font-bold text-white hover:bg-cyan-500">
+              <Plus className="w-4 h-4" /> ADD_TASK
+            </button>
+          </form>
+
+          {tasks.some((task) => task.completed) && (
+            <button type="button" onClick={clearCompleted} className="flex items-center gap-2 text-sm font-mono text-slate-400 hover:text-red-400">
+              <Trash2 className="w-4 h-4" /> CLEAR_COMPLETED
+            </button>
+          )}
+
+          <TaskList tasks={tasks} onToggle={toggleTask} onDelete={removeTask} />
         </div>
         
         <footer className="mt-12 text-center text-slate-600 text-xs font-mono">
@@ -74,3 +105,4 @@ function App() {
 }
 
 export default App;
+import { useState } from 'react';
